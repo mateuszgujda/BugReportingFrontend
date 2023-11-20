@@ -7,6 +7,8 @@ import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
 import { GridValueGetterParams } from "@mui/x-data-grid/models";
+import * as Yup from 'yup';
+import { ReportQueryFormState } from "../interfaces/forms";
 
 interface Category {
   id: string;
@@ -40,35 +42,35 @@ interface Emotion {
 
 export const Emotions: Array<Emotion> = [
   {
-    id: "VerySatisfied",
+    id: "VERY_SATISFIED",
     name: "Very Satisfied",
     icon: SentimentVerySatisfiedIcon,
     rate: 5,
   },
   {
-    id: "Satisfied",
+    id: "SATISFIED",
     name: "Satisfied",
     icon: SentimentSatisfiedAltIcon,
     rate: 4,
   },
   {
-    id: "Neutral",
+    id: "NEUTRAL",
     name: "Neutral",
     icon: SentimentNeutralIcon,
     rate: 3,
   },
   {
-    id: "Dissatisfied",
+    id: "DISSATISFIED",
     name: "Dissatisfied",
     icon: SentimentDissatisfiedIcon,
     rate: 2,
   },
   {
-    id: "VeryDissatisfied",
+    id: "VERY_DISSATISFIED",
     name: "Very Dissatisfied",
     icon: SentimentVeryDissatisfiedIcon,
     rate: 1,
-  },
+  }
 ];
 
 export const ReportColumnDefinitions: GridColDef[] = [
@@ -86,9 +88,9 @@ export const ReportColumnDefinitions: GridColDef[] = [
     flex: 1,
   },
   {
-    field: "description",
-    headerName: "Description",
-    description: "Player description",
+    field: "comment",
+    headerName: "Comment",
+    description: "Player comment",
     sortable: false,
     flex: 3,
   },
@@ -118,6 +120,20 @@ export const ReportColumnDefinitions: GridColDef[] = [
     flex: 1
   }
 ];
+
+
+export const ReportValidationSchema = Yup.object().shape({
+  startDate: Yup.string().required(),
+  endDate: Yup.string().required(),
+  category: Yup.string().required("Category option is required"),
+  emotion: Yup.string().required("Emotion option is required"),
+  screenshot: Yup.string().required("Screenshot option is required"),
+  frametime: Yup.number().notRequired().min(0, "Frametime cannot be lower than 0"),
+  version: Yup.string().required(),
+  limit : Yup.number().required("limit is required!")
+    .min(10, "Limit cannot be lower than 10")
+    .max(100, "Limit cannot be higher than 100"),
+})
 
 const rows = [
   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },

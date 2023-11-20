@@ -10,70 +10,54 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
-import React, { FormEventHandler } from "react";
-import { Emotions, Categories } from "../../consts/reportData";
+import React from "react";
+import { Emotions, Categories, ReportValidationSchema } from "../../consts/reportData";
+import { ReportQueryFormState } from "../../interfaces/forms";
+import { Controller, useForm } from 'react-hook-form';
+import FormInputText, { FormInputDropdown, FormSelectInputOption } from "../../controls/input/formInput";
+import { yupResolver } from '@hookform/resolvers/yup';
 
-const QueryBox = () => {
-  const [category, setCategory] = React.useState("");
-  const [emotion, setEmotion] = React.useState("");
-  const [screenshot, setScreenshot] = React.useState("");
-  const [frametime, setFrametime] = React.useState("");
-  const [startDate, setStartDate] = React.useState("");
-  const [endDate, setEndDate] = React.useState("");
-  const [limit, setLimit] = React.useState("");
-  const [version, setVersion] = React.useState("");
+import moment from "moment";
+
+interface QueryBoxProps {
+  formChangeHandler: (newState : ReportQueryFormState) => void; 
+}
+
+const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
+
+  var startDate = moment().format('yyyy-MM-D');
+  
+  var oneMonthAgo = moment().subtract(1, 'months').format('yyyy-MM-D');
+
+  const defaultValues: ReportQueryFormState = {
+    startDate: startDate,
+    endDate: oneMonthAgo,
+    category: "All",
+    emotion: "All",
+    screenshot: "All",
+    frametime: undefined,
+    version: "",
+    limit: 20,
+  };
+
+  const { handleSubmit, reset, control, setValue } = useForm<ReportQueryFormState>({
+    defaultValues: defaultValues,
+  });
+
+  const fields = []
 
   const EmotionBase = Emotions;
   const CategoriesBase = Categories;
 
-  const handleCategoryChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value as string);
-  };
-
-  const handleEmotionChange = (event: SelectChangeEvent) => {
-    setEmotion(event.target.value as string);
-  };
-
-  const handleScreenshotChange = (event: SelectChangeEvent) => {
-    setScreenshot(event.target.value as string);
-  };
-
-  const handleFrametimeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setFrametime(event.target.value as string);
-  };
-
-  const handleStartDateChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setStartDate(event.target.value as string);
-  };
-
-  const handleEndDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(event.target.value as string);
-  };
-
-  const handleVersionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setVersion(event.target.value as string);
-  };
-
-  const handleLimitChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setLimit(event.target.value as string);
-  };
-
-  const submitHandler: FormEventHandler<HTMLFormElement> = (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
-    event.preventDefault();
-    console.log("Form submitted");
-  };
+  const onSubmit = React.useCallback((values: ReportQueryFormState) => {
+    console.log(values);
+    formChangeHandler(values);
+  }, []);
 
   return (
     <Card sx={{ minWidth: 275 }}>
@@ -89,126 +73,50 @@ const QueryBox = () => {
         <Divider />
         <Toolbar />
         <Box>
-          <form onSubmit={submitHandler}>
-            <Grid container spacing={2}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+
+            <Grid alignItems={"center"} container spacing={2}>
+              <Grid xs={6} item={true}>
+                <FormInputText name="startDate" control={control} type="Date" label="Date From" />
+              </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <TextField
-                    id="query-start-date"
-                    type="datetime-local"
-                    InputLabelProps={{ shrink: true }}
-                    label="Start Date"
-                    value={startDate}
-                    onChange={handleStartDateChange}
-                  />
+                  <FormInputText name={"endDate"} label={"Date to"} type="Date" control={control}></FormInputText>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <TextField
-                    id="query-end-date"
-                    type="datetime-local"
-                    InputLabelProps={{ shrink: true }}
-                    label="End Date"
-                    value={endDate}
-                    onChange={handleEndDateChange}
-                  />
+                  <FormInputDropdown defaultValue="All" name="category" label="Categories" control={control} options={[...Categories.map(x => {return {name: x.name, value: x.id}}), {name: "All", value: "All"}]}/>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <InputLabel id="query-category">Category</InputLabel>
-                  <Select
-                    labelId="query-category"
-                    id="query-category-select"
-                    value={category}
-                    label="Category"
-                    onChange={handleCategoryChange}
-                  >
-                    {CategoriesBase.map((category) => {
-                      return (
-                        <MenuItem key={category.id} value={category.id}>
-                          {category.name}
-                        </MenuItem>
-                      );
-                    })}
-                    <MenuItem value="all">All</MenuItem>
-                  </Select>
+                  <FormInputDropdown defaultValue="All" name="emotion" label="Emotion" control={control} options={[... Emotions.map(x => {return { name: x.name, value: x.id}} ), {name: "All", value: "All"}]}/>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <InputLabel id="query-emotion">Emotion</InputLabel>
-                  <Select
-                    labelId="query-emotion"
-                    id="query-emotion-select"
-                    value={emotion}
-                    label="Emotion"
-                    onChange={handleEmotionChange}
-                  >
-                    {EmotionBase.map((emotion) => {
-                      return (
-                        <MenuItem key={emotion.id} value={emotion.rate}>
-                          {emotion.name}
-                        </MenuItem>
-                      );
-                    })}
-                    <MenuItem value="all">All</MenuItem>;
-                  </Select>
+                  <FormInputDropdown defaultValue="All" name="screenshot" label="Screenshot" control={control} options={[{name: "Yes", value: "true"}, {name: "No", value: "false"}, {name: "All", value: "All"}]}/>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <InputLabel id="query-screenshot">Screenshot</InputLabel>
-                  <Select
-                    labelId="query-screenshot"
-                    id="query-screenshot-select"
-                    value={screenshot}
-                    label="Screenshot"
-                    onChange={handleScreenshotChange}
-                  >
-                    <MenuItem value="all">Yes</MenuItem>;
-                    <MenuItem value="all">No</MenuItem>;
-                    <MenuItem value="all">All</MenuItem>;
-                  </Select>
+                  <FormInputText name={"frametime"} type="number" label={"Frametime"} control={control}></FormInputText>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <TextField
-                    id="query-frame-rate"
-                    type="number"
-                    label="Frametime"
-                    value={frametime}
-                    onChange={handleFrametimeChange}
-                  />
+                  <FormInputText name={"version"} label={"Version"} control={control}></FormInputText>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <TextField
-                    id="query-version"
-                    type="text"
-                    label="Version"
-                    value={version}
-                    onChange={handleVersionChange}
-                  />
-                </FormControl>
-              </Grid>
-              <Grid xs={6} item={true}>
-                <FormControl fullWidth>
-                  <TextField
-                    id="query-frame-rate"
-                    type="number"
-                    label="Limit"
-                    value={limit}
-                    onChange={handleLimitChange}
-                  />
+                  <FormInputText name={"limit"} type="number" label={"Limit"} control={control}></FormInputText>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>
                 <Box display={"flex"} flexDirection={"row-reverse"}>
-                <Button type="submit" variant="contained">Submit</Button>
+                  <Button type="submit" variant="contained">Submit</Button>
                 </Box>
               </Grid>
               <Grid xs={6} item={true} >

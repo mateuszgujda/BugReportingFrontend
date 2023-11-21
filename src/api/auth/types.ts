@@ -16,3 +16,18 @@ export type UserDetails = {
     createdAt : Date,
     permissions : Array<string>
 }
+
+export type AuthUser = {
+    userId: string,
+    email: string,
+    role: string,
+    permissions : Array<string>
+
+}
+
+export type JWT = {
+    userId: string,
+    email: string,
+    role: string,
+    claims: {[index: string]: Array<string>}
+}

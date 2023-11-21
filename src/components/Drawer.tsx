@@ -38,12 +38,10 @@ export default function NavDrawer(props: DrawerProps) {
         <Box sx={{ overflow: "auto", justifyContent: "space-between" }}>
           <List>
             {drawerOptions.map((option, index) => {
-              console.log(option);
               let properOption: NavItemType = option.notAuthenticated;
               if (!isNotAuthenticated) {
                 properOption = option.authenticated;
               }
-              console.log(properOption);
 
 
               return (

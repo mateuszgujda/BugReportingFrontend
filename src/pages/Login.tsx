@@ -5,6 +5,7 @@ import FormInputText from "../controls/input/formInput";
 import React, { useEffect } from "react";
 import { useAuthApi } from "../api/auth/api";
 import { useAuth } from "../providers/authProvider";
+import { useNavigate } from "react-router";
 
 interface LoginFormState {
     email: string,
@@ -34,15 +35,31 @@ export default () => {
           console.log(data);
     }, []);
 
-    const auth = useAuth();
+    const {setAuthValue, token} = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
-        if(data)
+        if(token)
         {
-            console.log("userLoggedIn");
-            
-            console.log(data);
+            console.log("alreadyLoggedIn");
+            //user already logged in navigate home
+            navigate("/");
         }
+        else
+        {
+            if(data)
+            {
+                console.log("userLoggedIn");
+                navigate("/");
+                console.log(data);
+                if(localStorage.getItem("__access-token") && setAuthValue)
+                {
+                    setAuthValue(localStorage.getItem("__access-token") as string);
+                }
+
+            }
+        }
+
     }, [data]);
 
     return <Card sx={{ minWidth: 150 }}>

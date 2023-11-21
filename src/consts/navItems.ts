@@ -50,15 +50,15 @@ export const MainNavItems : Array<AuthenticatedNavItemType> = [
     {
         authenticated: {
             id: 1,
-            route: '/login',
-            icon: InputIcon,
-            label: "Login"
-        },
-        notAuthenticated: {
-            id: 1,
             route: '/logout',
             icon: LogoutIcon,
             label: "Logout"
+        },
+        notAuthenticated: {
+            id: 1,
+            route: '/login',
+            icon: InputIcon,
+            label: "Login"
         }    
     }
 ]

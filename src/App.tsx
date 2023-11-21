@@ -15,9 +15,10 @@ import { getDesignTokens } from "./theme";
 import { ColorModeContext } from "./interfaces/colorModeContexts";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import AuthProvider from "./providers/authProvider";
 
 const ColorPaletteContext = React.createContext<ColorModeContext>({
-  toggleColorMode: () => {},
+  toggleColorMode: () => { },
 });
 
 export default function App() {
@@ -45,49 +46,51 @@ export default function App() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
-      <ColorPaletteContext.Provider value={colorMode}>
-        <ThemeProvider theme={theme}>
-          <BrowserRouter>
-            <Box sx={{ display: "flex" }}>
-              <CssBaseline />
-              <Navbar
-                onMenuBarClick={() => {
-                  setMobileDrawerActive(!mobileDrawerActive);
-                }}
-              />
-              <NavDrawer
-                bIsOpen={mobileDrawerActive}
-                ColorModeContext={ColorPaletteContext}
-                drawerToggle={() => {
-                  setMobileDrawerActive(!mobileDrawerActive);
-                }}
-                drawerWidth={drawerWidth}
-              />
-              <Box
-                component="main"
-                sx={{
-                  flexGrow: 1,
-                  p: 3,
-                  width: { sm: `calc(100% - ${drawerWidth}px)` },
-                }}
-              >
-                <Toolbar />
-                <Routes>
-                  {RoutingRoutes.map((data, index) => {
-                    return (
-                      <Route
-                        key={index}
-                        path={data.url}
-                        element={<data.element />}
-                      ></Route>
-                    );
-                  })}
-                </Routes>
+      <AuthProvider>
+        <ColorPaletteContext.Provider value={colorMode}>
+          <ThemeProvider theme={theme}>
+            <BrowserRouter>
+              <Box sx={{ display: "flex" }}>
+                <CssBaseline />
+                <Navbar
+                  onMenuBarClick={() => {
+                    setMobileDrawerActive(!mobileDrawerActive);
+                  }}
+                />
+                <NavDrawer
+                  bIsOpen={mobileDrawerActive}
+                  ColorModeContext={ColorPaletteContext}
+                  drawerToggle={() => {
+                    setMobileDrawerActive(!mobileDrawerActive);
+                  }}
+                  drawerWidth={drawerWidth}
+                />
+                <Box
+                  component="main"
+                  sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                  }}
+                >
+                  <Toolbar />
+                  <Routes>
+                    {RoutingRoutes.map((data, index) => {
+                      return (
+                        <Route
+                          key={index}
+                          path={data.url}
+                          element={<data.element />}
+                        ></Route>
+                      );
+                    })}
+                  </Routes>
+                </Box>
               </Box>
-            </Box>
-          </BrowserRouter>
-        </ThemeProvider>
-      </ColorPaletteContext.Provider>
+            </BrowserRouter>
+          </ThemeProvider>
+        </ColorPaletteContext.Provider>
+      </AuthProvider>
     </LocalizationProvider>
   );
 }

@@ -3,12 +3,18 @@ import InputIcon from '@mui/icons-material/Input';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { SvgIconTypeMap } from '@mui/material/SvgIcon';
 import { SteamIcon } from './icons';
+import LogoutIcon from '@mui/icons-material/Logout';
 import FeedIcon from '@mui/icons-material/Feed';
-interface NavItemType {
+export interface NavItemType {
     id: number,
     route : string,
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string; },
     label: string
+}
+
+export interface AuthenticatedNavItemType {
+    authenticated: NavItemType,
+    notAuthenticated : NavItemType
 }
 
 export const TopNavButtons: Array<NavItemType> = [
@@ -26,17 +32,33 @@ export const TopNavButtons: Array<NavItemType> = [
    }
 ]
 
-export const MainNavItems : Array<NavItemType> = [
+export const MainNavItems : Array<AuthenticatedNavItemType> = [
     {
-        id: 0,
-        route: "/",
-        icon: BugReportIcon,
-        label: "Reports"
+        authenticated: {
+            id: 0,
+            route: "/",
+            icon: BugReportIcon,
+            label: "Reports",
+        },
+        notAuthenticated: {
+            id: 0,
+            route: "/",
+            icon: BugReportIcon,
+            label: "Reports",
+        }    
     },
     {
-        id: 1,
-        route: '/login',
-        icon: InputIcon,
-        label: "Login"
+        authenticated: {
+            id: 1,
+            route: '/login',
+            icon: InputIcon,
+            label: "Login"
+        },
+        notAuthenticated: {
+            id: 1,
+            route: '/logout',
+            icon: LogoutIcon,
+            label: "Logout"
+        }    
     }
 ]

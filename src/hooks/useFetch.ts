@@ -1,4 +1,5 @@
 
+import axios, { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 
 const DEFAULT_FETCH_OPTIONS = {
@@ -16,7 +17,7 @@ type CommonFetch = {
   queryParams?: { [index: string]: any };
   /** this allows you to override any default fetch options on a 
   case by case basis. think of it like an escape hatch. */
-  fetchOptions?: RequestInit;
+  fetchOptions?: AxiosRequestConfig;
 }
 
 // <T> turns this into a generic component. We will take advantage of this 
@@ -55,15 +56,16 @@ function useCustomFetch<T> ({ url, method }: UseFetchProps) {
 
 
     try{
-      const response = await fetch(finalUrl, {
+      const response = await axios.request({
+        url: finalUrl,
         method,
         ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
         ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
-        body: JSON.stringify(input),
+        data: input,
         
       });
 
-      const data = await response.json();
+      const data = response.data;
       setIsLoading(false);
       setData(data);
     }

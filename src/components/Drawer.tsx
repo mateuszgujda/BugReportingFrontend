@@ -12,11 +12,12 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { ColorModeContext } from "../interfaces/colorModeContexts";
 import { IconButton, useTheme } from "@mui/material";
-import { MainNavItems } from "../consts/navItems";
+import { MainNavItems, AuthenticatedNavItemType, NavItemType } from "../consts/navItems";
+import { useAuth } from "../providers/authProvider";
 
 export interface DrawerProps {
   bIsOpen: boolean;
-  drawerToggle : () => void
+  drawerToggle: () => void
   ColorModeContext: React.Context<ColorModeContext>;
   drawerWidth: number;
 }
@@ -24,41 +25,56 @@ export interface DrawerProps {
 export default function NavDrawer(props: DrawerProps) {
   const colorMode = React.useContext(props.ColorModeContext);
   const theme = useTheme();
-  const drawerOptions = MainNavItems; 
-
+  const drawerOptions = MainNavItems;
+  const authContext = useAuth();
+  const isNotAuthenticated = !authContext.token;
   const container =
     window !== undefined ? () => window.document.body : undefined;
-  const drawerContent = (
-    <>
-      <Toolbar />
-      <Box sx={{ overflow: "auto" }}>
-        <List>
-          {drawerOptions.map((option, index) => (
-            <ListItem key={option.id} disablePadding>
-              <ListItemButton href={option.route}>
-                <ListItemIcon>
-                  {React.createElement(option.icon)}
-                </ListItemIcon>
-                <ListItemText primary={option.label} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <IconButton
-          sx={{ ml: 1 }}
-          onClick={colorMode.toggleColorMode}
-          color="inherit"
-        >
-          {theme.palette.mode === "dark" ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
-        </IconButton>
-      </Box>
-    </>
-  );
+  const drawerContent = () => {
+
+    return (
+      <>
+        <Toolbar />
+        <Box sx={{ overflow: "auto", justifyContent: "space-between" }}>
+          <List>
+            {drawerOptions.map((option, index) => {
+              console.log(option);
+              let properOption: NavItemType = option.notAuthenticated;
+              if (!isNotAuthenticated) {
+                properOption = option.authenticated;
+              }
+              console.log(properOption);
+
+
+              return (
+                <ListItem key={properOption.id} disablePadding>
+                  <ListItemButton href={properOption.route}>
+                    <ListItemIcon>
+                      {React.createElement(properOption.icon)}
+                    </ListItemIcon>
+                    <ListItemText primary={properOption.label} />
+                  </ListItemButton>
+                </ListItem>
+              )
+            }
+            )}
+          </List>
+          <Divider />
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
+        </Box>
+      </>
+    )
+  };
   return (
     <Box
       component="nav"
@@ -79,7 +95,7 @@ export default function NavDrawer(props: DrawerProps) {
           "& .MuiDrawer-paper": { boxSizing: "border-box", width: props.drawerWidth },
         }}
       >
-        {drawerContent}
+        {drawerContent()}
       </Drawer>
       <Drawer
         variant="permanent"
@@ -89,7 +105,7 @@ export default function NavDrawer(props: DrawerProps) {
         }}
         open
       >
-        {drawerContent}
+        {drawerContent()}
       </Drawer>
     </Box>
   );

@@ -78,7 +78,7 @@ export default function App() {
                       <Route
                         key={index}
                         path={data.url}
-                        element={data.element}
+                        element={<data.element />}
                       ></Route>
                     );
                   })}

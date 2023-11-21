@@ -1,7 +1,8 @@
 import { PagedResult } from "../shared/types";
-import { useFetch } from "../../hooks/useFetch";
-const { REACT_APP_API_URL } = process.env;
+import useFetch from "../../hooks/useFetch";
 import { BrowseReportsInput, GetReportInput, Report, ReportDetails } from "./types"
+const { REACT_APP_API_URL } = process.env;
+
 
 export const useGetReport = () => {
     // adding <Supplier> after useFetch will give the "data" value the type Supplier. 
@@ -15,7 +16,7 @@ export const useGetReport = () => {
    
      // using typescript to define the input here means no mistakes can be
      // made downstream when actually using our API layer
-     const getReport = (input: GetReportInput) => commonFetch({ input});
+     const getReport = (queryParams: GetReportInput) => commonFetch({ queryParams });
    
      return { getReport, isLoading, data };
 };
@@ -32,7 +33,7 @@ export const useBrowseReports = () => {
    
      // using typescript to define the input here means no mistakes can be
      // made downstream when actually using our API layer
-     const browseReports = (input: BrowseReportsInput) => commonFetch({ input});
+     const browseReports = (queryParams: BrowseReportsInput) => commonFetch({ queryParams});
    
      return { browseReports, isLoading, data };    
 }

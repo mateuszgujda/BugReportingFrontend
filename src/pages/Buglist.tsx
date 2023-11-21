@@ -9,8 +9,8 @@ import { useReportsApi } from "../api/reports/api";
 
 import moment from "moment";
 
-const Buglist = () => {
 
+const Buglist : React.FC = () => {
 
   const {
     browseReports: { query: browseReports, data, isLoading },
@@ -25,14 +25,16 @@ const Buglist = () => {
         results: 0,
         orderBy: "",
         sortOrder: "desc",
-        fromDate : moment(newFormState.startDate, 'yyyy-MM-D').toDate(),
-        toDate : moment(newFormState.endDate, 'yyyy-MM-D').toDate(),
+        fromDate : newFormState.startDate,
+        toDate : newFormState.endDate,
         frametime : newFormState.frametime,
         version : newFormState.version,
         emotion : newFormState.emotion == "All" ? undefined : newFormState.emotion,
         type : newFormState.category == "All"? undefined : newFormState.category,
         hasScreenshot : newFormState.screenshot == "All" ? undefined : Boolean(newFormState.screenshot)
       }
+
+      console.log(browseNewInput);
 
       await browseReports(browseNewInput);
   };

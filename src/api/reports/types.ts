@@ -3,8 +3,8 @@ import { PagedRequest } from "../shared/types";
 export type GetReportInput = { id: string }
 
 export interface BrowseReportsInput extends PagedRequest {
-    fromDate : Date;
-    toDate : Date;
+    fromDate : string;
+    toDate : string;
     frametime? : number;
     version : string;
     emotion? : string;

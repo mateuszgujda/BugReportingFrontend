@@ -1,17 +1,14 @@
-import { PagedResult } from "../api/shared/types";
 import { BrowseReportsInput, Report } from "../api/reports/types";
 import { Stack } from "@mui/material";
 import QueryBox from "../components/buglist/QueryBox";
 import ResultBox from "../components/buglist/ResultBox";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ReportQueryFormState } from "../interfaces/forms";
-import { useReportsApi } from "../api/reports/api";
 
 import moment from "moment";
 
 
 const Buglist : React.FC = () => {
-
 
   const [browseReportsInputData, setBrowseReportsInputData] = useState<BrowseReportsInput>({
     page: 0,

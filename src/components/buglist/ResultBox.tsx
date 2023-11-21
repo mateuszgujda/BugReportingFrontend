@@ -4,24 +4,28 @@ import CardContent from "@mui/material/CardContent";
 import Icon from "@mui/material/Icon";
 import Typography from "@mui/material/Typography";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
-import { Divider, Toolbar } from "@mui/material";
+import { Divider } from "@mui/material";
 import Searchbox from "../Searchbox";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridRowId } from "@mui/x-data-grid";
 import { ReportColumnDefinitions } from "../../consts/reportData";
 import { useReportsApi } from "../../api/reports/api";
 import { BrowseReportsInput, Report } from "../../api/reports/types";
-import { useEffect } from "react";
-import { styled } from '@mui/material/styles';
+import { MouseEventHandler, useEffect } from "react";
 import CustomNoRowsOverlay from "../EmptyGridCustom";
+import React from "react";
+import { useNavigate } from "react-router";
 
 interface ResultBoxProps {
-  reportQueryInput : BrowseReportsInput
+  reportQueryInput: BrowseReportsInput
 }
-const ResultBox = ({reportQueryInput} : ResultBoxProps) => {
+const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
 
   const {
     browseReports: { query: browseReports, data, isLoading },
   } = useReportsApi();
+
+  const IsAuthenticated = true;
+
 
 
 
@@ -31,9 +35,36 @@ const ResultBox = ({reportQueryInput} : ResultBoxProps) => {
   }, [reportQueryInput])
 
 
-  
+  const navigate = useNavigate();
 
-  const columnDefs = ReportColumnDefinitions;
+
+  let columnDefs = ReportColumnDefinitions;
+  if (IsAuthenticated) {
+    columnDefs = [...columnDefs, {
+      field: 'actions',
+      type: 'actions',
+      headerName: 'Actions',
+      width: 100,
+      cellClassName: 'actions',
+      sortable: false,
+      hideable: true,
+      filterable: false,
+      flex: 1,
+      getActions: ({ id, columns, row }) => {
+
+        const handleDetailsClick = (id: GridRowId): MouseEventHandler<HTMLButtonElement> => ()  => {
+          console.log(row.id);
+          navigate("reports/" + row.id);
+        }
+
+        return [
+          <GridActionsCellItem label="Details" icon={React.createElement(FindInPageIcon)} onClick={handleDetailsClick(id)}  >
+
+          </GridActionsCellItem>
+        ]
+      }
+    }]
+  }
   const rows: Array<Report> = data ? data.items : [];
   return (
     <Card sx={{ minWidth: 275 }} >

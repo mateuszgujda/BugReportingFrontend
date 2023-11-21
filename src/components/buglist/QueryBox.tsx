@@ -30,13 +30,13 @@ interface QueryBoxProps {
 
 const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
 
-  var startDate = moment().format('yyyy-MM-D');
+  var todaDate = moment().format('yyyy-MM-D');
   
   var oneMonthAgo = moment().subtract(1, 'months').format('yyyy-MM-D');
 
   const defaultValues: ReportQueryFormState = {
-    startDate: startDate,
-    endDate: oneMonthAgo,
+    startDate: oneMonthAgo,
+    endDate: todaDate,
     category: "All",
     emotion: "All",
     screenshot: "All",
@@ -55,7 +55,6 @@ const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
   const CategoriesBase = Categories;
 
   const onSubmit = React.useCallback((values: ReportQueryFormState) => {
-    console.log(values);
     formChangeHandler(values);
   }, []);
 

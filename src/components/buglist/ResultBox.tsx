@@ -8,12 +8,35 @@ import { Divider, Toolbar } from "@mui/material";
 import Searchbox from "../Searchbox";
 import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
 import { ReportColumnDefinitions } from "../../consts/reportData";
+import { useReportsApi } from "../../api/reports/api";
+import { BrowseReportsInput, Report } from "../../api/reports/types";
+import { useEffect } from "react";
+import { styled } from '@mui/material/styles';
+import CustomNoRowsOverlay from "../EmptyGridCustom";
 
-const ResultBox = () => {
+interface ResultBoxProps {
+  reportQueryInput : BrowseReportsInput
+}
+const ResultBox = ({reportQueryInput} : ResultBoxProps) => {
+
+  const {
+    browseReports: { query: browseReports, data, isLoading },
+  } = useReportsApi();
+
+
+
+  useEffect(() => {
+    browseReports(reportQueryInput)
+    console.log(isLoading);
+  }, [reportQueryInput])
+
+
+  
+
   const columnDefs = ReportColumnDefinitions;
-  const rows: Array<any> = [];
+  const rows: Array<Report> = data ? data.items : [];
   return (
-    <Card sx={{ minWidth: 275 }}>
+    <Card sx={{ minWidth: 275 }} >
       <CardContent>
         <Box>
           <Icon>
@@ -26,6 +49,11 @@ const ResultBox = () => {
         <Divider />
         <Searchbox />
         <DataGrid
+          sx={{ '--DataGrid-overlayHeight': '300px' }}
+          slots={{ noRowsOverlay: CustomNoRowsOverlay }}
+          autoHeight
+          getRowHeight={() => 'auto'}
+          loading={isLoading}
           rows={rows}
           columns={columnDefs}
           initialState={{

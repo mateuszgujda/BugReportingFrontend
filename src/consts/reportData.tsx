@@ -1,14 +1,16 @@
-import { SvgIconTypeMap } from "@mui/material";
+import { SvgIconTypeMap, styled } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
 import SentimentSatisfiedAltIcon from "@mui/icons-material/SentimentSatisfiedAlt";
 import SentimentNeutralIcon from "@mui/icons-material/SentimentNeutral";
 import SentimentDissatisfiedIcon from "@mui/icons-material/SentimentDissatisfied";
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import { GridColDef } from "@mui/x-data-grid/models/colDef";
-import { GridValueGetterParams } from "@mui/x-data-grid/models";
 import * as Yup from 'yup';
-import { ReportQueryFormState } from "../interfaces/forms";
+import React from "react";
+import moment from "moment";
 
 interface Category {
   id: string;
@@ -79,6 +81,8 @@ export const ReportColumnDefinitions: GridColDef[] = [
     headerName: "ID",
     description: "Report Identifier",
     sortable: false,
+    hideable: true,
+    filterable: false,
     flex: 1,
   },
   {
@@ -86,38 +90,65 @@ export const ReportColumnDefinitions: GridColDef[] = [
     headerName: "Emotion",
     description: "Emotion of given feedback",
     flex: 1,
+    hideable: true,
+    filterable: false,
+    renderCell: (params => {
+      return React.createElement(Emotions.find(x => x.id == params.row.emotion)?.icon as OverridableComponent<SvgIconTypeMap<{}, "svg">> & { muiName: string });
+    })
   },
   {
     field: "comment",
     headerName: "Comment",
     description: "Player comment",
     sortable: false,
-    flex: 3,
+    filterable: false,
+    flex: 2,
   },
   {
-    field: "screenshot",
+    field: "hasScreenshot",
     headerName: "Screenshot",
-    description: "Screenshot provided with report",
-    width: 200,
-    flex: 2,
+    description: "Wheter or not screenshot is included",
+    flex: 1,
+    hideable: true,
+    filterable: false,
+    renderCell: (params => {
+      return React.createElement(Boolean(params.row.hasScreenshot) ? CheckIcon : CloseIcon);
+    })
   },
   {
     field: "version",
     headerName: "Version",
     description: "Version of the game",
-    flex: 1
+    flex: 1,
+    hideable: true,
+    filterable: false
   },
   {
-    field: "frametime",
+    field: "frameTime",
     headerName: "Frame Time[ms]",
     description: "Game FrameTime",
-    flex: 1
+    flex: 1,
+    hideable: true,
+    filterable: false
   },
   {
-    field: "Date",
+    field: "addedAt",
     headerName: "Date",
     description: "Time at which the snapshot was taken",
-    flex: 1
+    flex: 1,
+    hideable: true,
+    filterable: false,
+    valueGetter: (params => {
+      return moment(params.row.addedAt).format("D.MM.YYYY HH:mm:ss");
+    })
+  },
+  {
+    field: "reportType",
+    headerName: "Category",
+    description: "Report category",
+    flex: 1,
+    hideable: true,
+    filterable: false
   }
 ];
 

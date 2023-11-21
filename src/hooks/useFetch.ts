@@ -54,19 +54,28 @@ function useCustomFetch<T> ({ url, method }: UseFetchProps) {
     }
 
 
+    try{
+      const response = await fetch(finalUrl, {
+        method,
+        ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
+        ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
+        body: JSON.stringify(input),
+        
+      });
 
-    const response = await fetch(finalUrl, {
-      method,
-      ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
-      ...fetchOptions, // this allows you to override any default fetch options on a case by case basis
-      body: JSON.stringify(input),
-      
-    });
+      const data = await response.json();
+      setIsLoading(false);
+      setData(data);
+    }
+    catch(e){
+      console.log(e);
+      setIsLoading(false);
+      setData(null);
+    }
 
-    const data = await response.json();
 
-    setIsLoading(false);
-    setData(data);
+
+
   };
 
   return { isLoading, commonFetch, data };

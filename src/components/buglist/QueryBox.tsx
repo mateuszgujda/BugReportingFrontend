@@ -30,7 +30,7 @@ interface QueryBoxProps {
 
 const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
 
-  var todaDate = moment().format('yyyy-MM-D');
+  var todaDate = moment().add(1, 'days').hours(0).minutes(0).milliseconds(0).seconds(0).format('yyyy-MM-D');
   
   var oneMonthAgo = moment().subtract(1, 'months').format('yyyy-MM-D');
 

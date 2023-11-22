@@ -1,0 +1,48 @@
+version: '3.1'
+
+services:
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+       - "C:/Users/User/Desktop/BugReportingApp/DBVolume:/data/db"
+    ports:
+      - 27017:27017
+  backend:
+    container_name: backend
+    image: bug-reporting-backend
+    restart: always
+    ports: 
+      - 5000:80
+    environment:
+      - files__fileStorage__storagePath=/storage
+      - files__mongo__connectionString=mongodb://root:example@mongo:27017
+      - files__mongo__database=files
+      - users__mongo__connectionString=mongodb://root:example@mongo:27017
+      - users__mongo__database=users
+      - reports__mongo__connectionString=mongodb://root:example@mongo:27017
+      - reports__mongo__database=reports
+      - reports__apiAuthorization__validHeaders__0=x-api-key
+      - reports__apiAuthorization__validHeaders__1=X-API-KEY
+      - reports__apiAuthorization__validKeys__0=669069455
+      - mongo__connectionString=mongodb://root:example@mongo:27017
+      - ASPNETCORE_ENVIRONMENT=Production
+    volumes:
+      - "C:/Users/User/Desktop/BugReportingApp/FileStorageTest:/storage:rw"
+    depends_on:
+      - mongo
+  frontend:
+    container_name: frontend
+    image: bug-reporting-frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    
+      

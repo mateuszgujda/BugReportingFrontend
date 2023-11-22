@@ -1,0 +1,6 @@
+.gitnigore
+.env.local
+Dockerfile
+.dockerignore
+package-lock.json
+node_modules/

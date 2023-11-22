@@ -31,7 +31,6 @@ const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
 
   useEffect(() => {
     browseReports(reportQueryInput)
-    console.log(isLoading);
   }, [reportQueryInput])
 
 
@@ -53,7 +52,6 @@ const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
       getActions: ({ id, columns, row }) => {
 
         const handleDetailsClick = (id: GridRowId): MouseEventHandler<HTMLButtonElement> => ()  => {
-          console.log(row.id);
           navigate("reports/" + row.id);
         }
 

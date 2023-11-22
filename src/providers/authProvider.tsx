@@ -1,6 +1,6 @@
 import axios from "axios";
-import { ReactNode, createContext, useContext, useEffect, useMemo, useReducer, useState } from "react";
-import { AuthUser, JWT, UserDetails } from "../api/auth/types";
+import { ReactNode, createContext, useContext, useMemo, useReducer } from "react";
+import { AuthUser, JWT } from "../api/auth/types";
 import { jwtDecode } from "jwt-decode";
 import { useCookies } from "react-cookie";
 import { CookieSetOptions } from "universal-cookie";
@@ -34,7 +34,7 @@ interface AuthAction {
 }
 
 // Create the authentication context
-const AuthContext = createContext<AuthContext>({token: null, userDetails: null});
+const AuthContext = createContext<AuthContext>({token: null, userDetails: null, setAuthValue: () => {}, clearAuthValue: () =>{} });
 
 // Define the possible actions for the authReducer
 // Reducer function to handle authentication state changes

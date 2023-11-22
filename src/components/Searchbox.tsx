@@ -18,7 +18,6 @@ const Searchbox = (props: SearchboxProps) => {
   const [searchText, setSearchText] = useState("");
 
   const keyUpHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event.currentTarget.value);
     setSearchText(event.currentTarget.value);
     if (props.onKeyUp) {
       props.onKeyUp(event.currentTarget.value);

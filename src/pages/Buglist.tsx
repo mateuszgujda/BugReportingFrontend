@@ -18,6 +18,7 @@ const Buglist : React.FC = () => {
     orderBy: "",
     sortOrder: "desc",
     fromDate : oneMonthAgo,
+    category: undefined,
     toDate : todaDate,
     frametime : undefined,
     version : '',
@@ -41,6 +42,7 @@ const Buglist : React.FC = () => {
         version : newFormState.version,
         emotion : newFormState.emotion == "All" ? undefined : newFormState.emotion,
         type : newFormState.category == "All"? undefined : newFormState.category,
+        category : newFormState.issueType == "All"? undefined : newFormState.issueType,
         hasScreenshot : newFormState.screenshot == "All" ? undefined : Boolean(newFormState.screenshot)
       }
 

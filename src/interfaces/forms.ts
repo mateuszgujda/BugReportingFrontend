@@ -5,6 +5,7 @@ export interface ReportQueryFormState extends FieldValues {
     endDate: string,
     category: string,
     emotion: string,
+    issueType: string,
     screenshot: string,
     frametime?: number,
     version: string,

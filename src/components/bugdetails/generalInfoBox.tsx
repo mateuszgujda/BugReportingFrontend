@@ -5,9 +5,9 @@ import moment from "moment";
 export interface GeneralInfoBoxProps {
     reportType: string,
     reportState: string,
+    reportCategory: string,
     addedAt: Date,
     version: string,
-    frametime: number,
     allowedContact: boolean,
     contactEmail: string,
     id: string
@@ -53,6 +53,11 @@ const GeneralInfoBox = (props: GeneralInfoBoxProps) => {
                 </Grid>
                 <Grid xs={6} item={true}>
                     <Typography typography="H5" >
+                        Category: {props?.reportCategory}
+                    </Typography>
+                </Grid>
+                <Grid xs={6} item={true}>
+                    <Typography typography="H5" >
                         State: {props?.reportState}
                     </Typography>
                 </Grid>
@@ -64,11 +69,6 @@ const GeneralInfoBox = (props: GeneralInfoBoxProps) => {
                 <Grid xs={6} item={true}>
                     <Typography typography="H5" >
                         Version: {props?.version}
-                    </Typography>
-                </Grid>
-                <Grid xs={6} item={true}>
-                    <Typography typography="H5" >
-                        Frametime: {props?.frametime}
                     </Typography>
                 </Grid>
                 <Grid xs={6} item={true}>

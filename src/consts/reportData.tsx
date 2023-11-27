@@ -16,23 +16,59 @@ interface Category {
   id: string;
   name: string;
 }
+
+interface IssueType { 
+  id: string;
+  name: string;
+}
 export const Categories: Array<Category> = [
   {
-    id: "General",
-    name: "General",
+    id: "Idea",
+    name: "Idea",
   },
   {
-    id: "Gameplay",
-    name: "Gameplay",
+    id: "Issue",
+    name: "Issue",
   },
   {
-    id: "Bug",
-    name: "Bug",
+    id: "Feedback",
+    name: "Feedback",
   },
   {
-    id: "Framerate",
-    name: "Framerate",
+    id: "Other",
+    name: "Other",
   },
+];
+
+export const IssueTypes: Array<IssueType> = [
+  {
+    id: "None",
+    name: "None",
+  },
+  {
+    id: "Crash or Freeze",
+    name: "Crash_Freeze",
+  },
+  {
+    id: "Performance",
+    name: "Performance",
+  },
+  {
+    id: "GameplayDefects",
+    name: "GameplayDefects",
+  },
+  {
+    id: "Audio",
+    name: "Audio",
+  },
+  {
+    id: "Visual",
+    name: "Visual",
+  },
+  {
+    id: "Other",
+    name: "Other"
+  }
 ];
 
 interface Emotion {
@@ -124,9 +160,9 @@ export const ReportColumnDefinitions: GridColDef[] = [
     filterable: false
   },
   {
-    field: "frameTime",
-    headerName: "Frame Time[ms]",
-    description: "Game FrameTime",
+    field: "reportCategory",
+    headerName: "Issue Category",
+    description: "Issue Category",
     flex: 1,
     hideable: true,
     filterable: false

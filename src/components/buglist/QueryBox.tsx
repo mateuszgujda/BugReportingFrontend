@@ -16,7 +16,7 @@ import {
 } from "@mui/material";
 import HelpIcon from "@mui/icons-material/Help";
 import React from "react";
-import { Emotions, Categories, ReportValidationSchema } from "../../consts/reportData";
+import { Emotions, Categories, ReportValidationSchema, IssueTypes } from "../../consts/reportData";
 import { ReportQueryFormState } from "../../interfaces/forms";
 import { Controller, useForm } from 'react-hook-form';
 import FormInputText, { FormInputDropdown, FormSelectInputOption } from "../../controls/input/formInput";
@@ -38,6 +38,7 @@ const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
     startDate: oneMonthAgo,
     endDate: todaDate,
     category: "All",
+    issueType: "All",
     emotion: "All",
     screenshot: "All",
     frametime: undefined,
@@ -48,11 +49,6 @@ const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
   const { handleSubmit, reset, control, setValue } = useForm<ReportQueryFormState>({
     defaultValues: defaultValues,
   });
-
-  const fields = []
-
-  const EmotionBase = Emotions;
-  const CategoriesBase = Categories;
 
   const onSubmit = React.useCallback((values: ReportQueryFormState) => {
     formChangeHandler(values);
@@ -100,7 +96,7 @@ const QueryBox = ({formChangeHandler} : QueryBoxProps) => {
               </Grid>
               <Grid xs={6} item={true}>
                 <FormControl fullWidth>
-                  <FormInputText name={"frametime"} type="number" label={"Frametime"} control={control}></FormInputText>
+                  <FormInputDropdown defaultValue="All" name="issueType" label="Issue Category" control={control} options={[... IssueTypes.map(x => {return { name: x.name, value: x.id}} ), {name: "All", value: "All"}]}/>
                 </FormControl>
               </Grid>
               <Grid xs={6} item={true}>

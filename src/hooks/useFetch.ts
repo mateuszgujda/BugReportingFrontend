@@ -58,6 +58,7 @@ function useCustomFetch<T> ({ url, method }: UseFetchProps) {
     try{
       const response = await axios.request({
         url: finalUrl,
+        withCredentials: false,
         method,
         ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
         ...fetchOptions, // this allows you to override any default fetch options on a case by case basis

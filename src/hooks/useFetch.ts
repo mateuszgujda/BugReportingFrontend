@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 
 const DEFAULT_FETCH_OPTIONS = {
-  headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
+  headers: { "Content-Type": "application/json"},
 };
 
 type UseFetchProps = {

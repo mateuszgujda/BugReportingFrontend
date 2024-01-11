@@ -23,6 +23,10 @@ interface IssueType {
 }
 export const Categories: Array<Category> = [
   {
+    id: "Issue",
+    name: "Issue"
+  },
+  {
     id: "Idea",
     name: "Idea",
   },
@@ -37,7 +41,7 @@ export const Categories: Array<Category> = [
   {
     id: "Other",
     name: "Other",
-  },
+  }
 ];
 
 export const IssueTypes: Array<IssueType> = [

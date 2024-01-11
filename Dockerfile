@@ -4,7 +4,7 @@ COPY package.json .
 RUN npm install
 COPY . .
 
-ARG API_URL=http://localhost:5000
+ARG API_URL=https://backend.bugreporting-drago.com
 ENV REACT_APP_API_URL=$API_URL
 RUN npm run build
 

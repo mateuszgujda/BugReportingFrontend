@@ -27,8 +27,8 @@ export const Categories: Array<Category> = [
     name: "Idea",
   },
   {
-    id: "Issue",
-    name: "Issue",
+    id: "Questions",
+    name: "Questions",
   },
   {
     id: "Feedback",

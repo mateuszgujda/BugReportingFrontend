@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import { useState } from "react";
 
 const DEFAULT_FETCH_OPTIONS = {
-  headers: { "Content-Type": "application/json" },
+  headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
 };
 
 type UseFetchProps = {
@@ -58,7 +58,6 @@ function useCustomFetch<T> ({ url, method }: UseFetchProps) {
     try{
       const response = await axios.request({
         url: finalUrl,
-        withCredentials: false,
         method,
         ...DEFAULT_FETCH_OPTIONS, // this should be defined as a const in a separate file
         ...fetchOptions, // this allows you to override any default fetch options on a case by case basis

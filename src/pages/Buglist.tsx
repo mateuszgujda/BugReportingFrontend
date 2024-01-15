@@ -29,7 +29,7 @@ const Buglist : React.FC = () => {
   
 
   const formChangeHandler = async (newFormState : ReportQueryFormState) => {
-      console.log(newFormState);
+      //console.log(newFormState);
 
       const browseNewInput : BrowseReportsInput = {
         page: 0,
@@ -46,7 +46,7 @@ const Buglist : React.FC = () => {
         hasScreenshot : newFormState.screenshot == "All" ? undefined : Boolean(newFormState.screenshot)
       }
 
-      console.log(browseNewInput);
+      //console.log(browseNewInput);
       setBrowseReportsInputData(browseNewInput);
 
   };
@@ -69,7 +69,7 @@ const Buglist : React.FC = () => {
       }
 
       setBrowseReportsInputData(browseNewInput);
-      console.log(browseNewInput);
+      //console.log(browseNewInput);
 
   }
   return (

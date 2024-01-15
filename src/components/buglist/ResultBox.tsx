@@ -29,13 +29,13 @@ const ResultBox = ({ reportQueryInput, onPageChanged }: ResultBoxProps) => {
 
 
   const PaginationModelChanged = (model: GridPaginationModel, details : GridCallbackDetails<any>) => {
-    console.log(model.page+1);
+    //console.log(model.page+1);
     onPageChanged(model.page);
   }
 
 
   useEffect(() => {
-    console.log("Changed");
+   // console.log("Changed");
     browseReports(reportQueryInput)
   }, [reportQueryInput])
 
@@ -70,7 +70,7 @@ const ResultBox = ({ reportQueryInput, onPageChanged }: ResultBoxProps) => {
     }]
   }
   const rows: Array<Report> = data ? data.items : [];
-  console.log(rows);
+  //console.log(rows);
   const currentPageSize: number = data? data.resultsPerPage : 20;
   const currentPage: number = data? data.currentPage -1 : 0;
   const totalPages: number = data? data.totalPages : 0;

@@ -14,7 +14,7 @@ const Buglist : React.FC = () => {
   var oneMonthAgo = moment().subtract(1, 'months').format('yyyy-MM-D');
   const [browseReportsInputData, setBrowseReportsInputData] = useState<BrowseReportsInput>({
     page: 0,
-    results: 0,
+    results: 20,
     orderBy: "",
     sortOrder: "desc",
     fromDate : oneMonthAgo,
@@ -29,11 +29,11 @@ const Buglist : React.FC = () => {
   
 
   const formChangeHandler = async (newFormState : ReportQueryFormState) => {
-      //console.log(newFormState);
+      console.log(newFormState);
 
       const browseNewInput : BrowseReportsInput = {
         page: 0,
-        results: 0,
+        results: newFormState.limit,
         orderBy: "",
         sortOrder: "desc",
         fromDate : newFormState.startDate,
@@ -46,14 +46,36 @@ const Buglist : React.FC = () => {
         hasScreenshot : newFormState.screenshot == "All" ? undefined : Boolean(newFormState.screenshot)
       }
 
-      //console.log(browseNewInput);
+      console.log(browseNewInput);
       setBrowseReportsInputData(browseNewInput);
 
   };
+
+  const onPageChangeHandler =  (newPage : number) => {
+
+      const browseNewInput : BrowseReportsInput = {
+        page: newPage + 1,
+        results: browseReportsInputData.results,
+        orderBy: "",
+        sortOrder: "desc",
+        fromDate : browseReportsInputData.fromDate,
+        toDate : browseReportsInputData.toDate,
+        frametime : browseReportsInputData.frametime,
+        version : browseReportsInputData.version,
+        emotion : browseReportsInputData.emotion,
+        type : browseReportsInputData.category,
+        category : browseReportsInputData.type,
+        hasScreenshot : browseReportsInputData.hasScreenshot
+      }
+
+      setBrowseReportsInputData(browseNewInput);
+      console.log(browseNewInput);
+
+  }
   return (
     <Stack spacing={2}>
       <QueryBox formChangeHandler={formChangeHandler} />
-      <ResultBox reportQueryInput={browseReportsInputData} />
+      <ResultBox key={"testKey" + browseReportsInputData.page} onPageChanged={onPageChangeHandler} reportQueryInput={browseReportsInputData} />
     </Stack>
   );
 };

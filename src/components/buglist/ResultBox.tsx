@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import { Divider } from "@mui/material";
 import Searchbox from "../Searchbox";
-import { DataGrid, GridActionsCellItem, GridRowId } from "@mui/x-data-grid";
+import { DataGrid, GridActionsCellItem, GridCallbackDetails, GridPaginationModel, GridRowId } from "@mui/x-data-grid";
 import { ReportColumnDefinitions } from "../../consts/reportData";
 import { useReportsApi } from "../../api/reports/api";
 import { BrowseReportsInput, Report } from "../../api/reports/types";
@@ -17,8 +17,9 @@ import { useNavigate } from "react-router";
 
 interface ResultBoxProps {
   reportQueryInput: BrowseReportsInput
+  onPageChanged: (newPage: number) => void
 }
-const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
+const ResultBox = ({ reportQueryInput, onPageChanged }: ResultBoxProps) => {
 
   const {
     browseReports: { query: browseReports, data, isLoading },
@@ -27,9 +28,14 @@ const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
   const IsAuthenticated = true;
 
 
+  const PaginationModelChanged = (model: GridPaginationModel, details : GridCallbackDetails<any>) => {
+    console.log(model.page+1);
+    onPageChanged(model.page);
+  }
 
 
   useEffect(() => {
+    console.log("Changed");
     browseReports(reportQueryInput)
   }, [reportQueryInput])
 
@@ -64,6 +70,11 @@ const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
     }]
   }
   const rows: Array<Report> = data ? data.items : [];
+  console.log(rows);
+  const currentPageSize: number = data? data.resultsPerPage : 20;
+  const currentPage: number = data? data.currentPage -1 : 0;
+  const totalPages: number = data? data.totalPages : 0;
+  const totalResults: number = data? data.totalResults : 0;
   return (
     <Card sx={{ minWidth: 275 }} >
       <CardContent>
@@ -85,12 +96,14 @@ const ResultBox = ({ reportQueryInput }: ResultBoxProps) => {
           loading={isLoading}
           rows={rows}
           columns={columnDefs}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0 },
-            },
+          paginationMode="server"
+          paginationModel={{
+            page: currentPage,
+            pageSize: currentPageSize
           }}
-          pageSizeOptions={[]}
+          pageSizeOptions={[currentPageSize]}
+          rowCount={totalResults}
+          onPaginationModelChange={PaginationModelChanged}
         />
       </CardContent>
     </Card>

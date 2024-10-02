@@ -18,18 +18,18 @@ export interface AuthenticatedNavItemType {
 }
 
 export const TopNavButtons: Array<NavItemType> = [
-   {
-    id: 0,
-    route : "https://store.steampowered.com/app/1394960/Winter_Survival/",
-    icon: SteamIcon,
-    label: "Buy WS"
-   },
-   {
-    id: 1,
-    route: "https://store.steampowered.com/news/app/1394960",
-    icon: FeedIcon,
-    label: "Developer News"
-   }
+//    {
+//     id: 0,
+//     route : "https://store.steampowered.com/app/1394960/Winter_Survival/",
+//     icon: SteamIcon,
+//     label: "Buy WS"
+//    },
+//    {
+//     id: 1,
+//     route: "https://store.steampowered.com/news/app/1394960",
+//     icon: FeedIcon,
+//     label: "Developer News"
+//    }
 ]
 
 export const MainNavItems : Array<AuthenticatedNavItemType> = [

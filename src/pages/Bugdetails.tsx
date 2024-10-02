@@ -28,7 +28,7 @@ const BugDetails: React.FC = () => {
                 <Box>
                     <Grid container spacing={2} alignItems="stretch">
                         <Grid item xs={12} lg={6}>
-                            <GeneralInfoBox reportType={data?.reportType || ""} reportState={data?.reportState || ""} addedAt={data?.addedAt || new Date()} version={data?.version || ""} allowedContact={data?.allowContact || false} contactEmail={data?.contactEmail || ""} id={id || ""} reportCategory={data?.reportCategory || ""} />
+                            <GeneralInfoBox reportType={data?.reportType || ""} reportState={data?.reportState || ""} addedAt={data?.addedAt || new Date()} version={data?.version || ""} allowedContact={data?.allowContact || false} contactEmail={data?.contactEmail || ""} id={id || ""} reportCategory={data?.reportCategory || ""} detailText={data?.comment || ""} />
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <BugfileBox bugfileId={data?.bugfileId} />

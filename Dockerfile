@@ -5,7 +5,9 @@ RUN npm install
 COPY . .
 
 ARG API_URL=https://backend.bugreporting-drago.com
+ARG APP_NAME="Winter Survival"
 ENV REACT_APP_API_URL=$API_URL
+ENV REACT_APP_APP_NAME=$APP_NAME
 RUN npm run build
 
 FROM nginx:1.25-alpine

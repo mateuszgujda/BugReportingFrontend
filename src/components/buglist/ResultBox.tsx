@@ -13,7 +13,6 @@ import { BrowseReportsInput, Report } from "../../api/reports/types";
 import { MouseEventHandler, useEffect } from "react";
 import CustomNoRowsOverlay from "../EmptyGridCustom";
 import React from "react";
-import { useNavigate } from "react-router";
 
 interface ResultBoxProps {
   reportQueryInput: BrowseReportsInput
@@ -40,9 +39,6 @@ const ResultBox = ({ reportQueryInput, onPageChanged }: ResultBoxProps) => {
   }, [reportQueryInput])
 
 
-  const navigate = useNavigate();
-
-
   let columnDefs = ReportColumnDefinitions;
   if (IsAuthenticated) {
     columnDefs = [...columnDefs, {
@@ -58,7 +54,7 @@ const ResultBox = ({ reportQueryInput, onPageChanged }: ResultBoxProps) => {
       getActions: ({ id, columns, row }) => {
 
         const handleDetailsClick = (id: GridRowId): MouseEventHandler<HTMLButtonElement> => ()  => {
-          navigate("reports/" + row.id);
+          window.open(`${window.location.origin}/reports/${id}`)
         }
 
         return [

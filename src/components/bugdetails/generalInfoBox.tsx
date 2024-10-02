@@ -10,7 +10,8 @@ export interface GeneralInfoBoxProps {
     version: string,
     allowedContact: boolean,
     contactEmail: string,
-    id: string
+    id: string,
+    detailText: string
 
 }
 
@@ -74,6 +75,12 @@ const GeneralInfoBox = (props: GeneralInfoBoxProps) => {
                 <Grid xs={6} item={true}>
                     {ShowContactInfo(props?.allowedContact)}
 
+                </Grid>
+                <Grid xs={12} item={true}>
+                    <Typography typography="H5" >
+                        Details:
+                    </Typography>
+                    {props.detailText}
                 </Grid>
             </Grid>
 

@@ -4,7 +4,7 @@ COPY package.json .
 RUN npm install
 COPY . .
 
-ARG API_URL=https://backend.bugreporting-drago.com
+ARG API_URL=https://backend.bugs-drago.net
 ARG APP_NAME="Winter Survival"
 ENV REACT_APP_API_URL=$API_URL
 ENV REACT_APP_APP_NAME=$APP_NAME

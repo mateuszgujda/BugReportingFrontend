@@ -21,5 +21,5 @@ jobs:
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Build the Docker image
       run: |
-           docker build . --tag ghcr.io/mateuszgujda/bug-reporting-frontend-gss:latest --build-arg API_URL="https://backend-gss.bugreporting-drago.com" --build-arg APP_NAME="Gas Station Simulator"
+           docker build . --tag ghcr.io/mateuszgujda/bug-reporting-frontend-gss:latest --build-arg API_URL="https://backend-gss.bugs-drago.net" --build-arg APP_NAME="Gas Station Simulator"
            docker push ghcr.io/mateuszgujda/bug-reporting-frontend-gss:latest

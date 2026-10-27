@@ -1,4 +1,4 @@
-name: Docker Image CI RD
+name: Docker Image CI AC
 
 on:
   push:
